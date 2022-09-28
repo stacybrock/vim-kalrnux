@@ -35,3 +35,11 @@ augroup unimpaired_paste
                 \ unlet s:mouse |
                 \ endif
 augroup END
+
+
+" load custom word lists for vimspell
+" inspired by vim-dirtytalk
+" https://github.com/psliwka/vim-dirtytalk
+let g:wordlister_blacklist = get(g:, 'wordlister_blacklist', [])
+
+command! WordlisterUpdate call wordlister#update()
