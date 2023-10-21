@@ -1,5 +1,5 @@
 " kalrnux.vim
-" 
+"
 " various tweaks to vim that require implementations that
 " would otherwise clutter .vimrc
 
@@ -46,25 +46,11 @@ command! WordlisterUpdate call wordlister#update()
 
 
 " renumber simple incremented markdown lists
-python3 << endpython
+function! ReincrementList() range
+    if !has('python3')
+        finish
+    endif
 
-import re
-import vim
-
-def ReincrementList():
-  range = vim.current.range
-  m = re.match('(\d+)\.', range[0])
-  start_num = int(m.group(1))
-
-  for i, line in enumerate(range):
-      line_num = range.start + 1 + i
-      new_num = start_num + i
-      vim.command(f"{line_num}s/\d\+\./{new_num}\./")
-
-  vim.command(":nohlsearch")
-endpython
-
-if has("python3")
-    command! -range ReincrementList '<,'> python3 ReincrementList()
-    vnoremap <silent> <leader>R :ReincrementList<CR>
-endif
+    py3file reincrement.py
+endfunc
+vnoremap <silent> <leader>R :call ReincrementList()<CR>
